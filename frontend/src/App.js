@@ -1,16 +1,41 @@
-import * as React from "react";
-import { ethers } from "ethers";
+import React, { useEffect, useState } from "react";
 import './App.css';
 
-export default function App() {
+const App = () => {
 
-  const wave = () => {
-    
-  }
+  const [currentAccount, setCurrentAccount] = useState("");
   
+  const checkIfWalletIsConnected = async () => {
+    try {
+      const { ethereum } = window;
+
+      if(!ethereum) {
+        console.log("Make sure you have Metamask installed.");
+        return;
+      } else {
+        console.log("Jawollo", ethereum);
+      }
+
+      const accounts = await ethereum.request({ method: "eth_accounts"});
+
+      if(accounts.length !== 0) {
+        const account = accounts[0];
+        console.log("Found an authorized account: ", account);
+        setCurrentAccount(account);
+      } else {
+        console.log("No authorized account found");
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  useEffect(() => {
+    checkIfWalletIsConnected();
+  }, []);
+
   return (
     <div className="mainContainer">
-
       <div className="dataContainer">
         <div className="header">
         👋 Hey there!
@@ -20,10 +45,12 @@ export default function App() {
         I am farza and I worked on self-driving cars so that's pretty cool right? Connect your Ethereum wallet and wave at me!
         </div>
 
-        <button className="waveButton" onClick={wave}>
-          Wave at Me
+        <button className="voteButton" onClick={vote}>
+          Vote here
         </button>
       </div>
     </div>
   );
 }
+
+export default App;

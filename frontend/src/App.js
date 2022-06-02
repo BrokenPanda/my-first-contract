@@ -45,7 +45,7 @@ const App = () => {
         I am farza and I worked on self-driving cars so that's pretty cool right? Connect your Ethereum wallet and wave at me!
         </div>
 
-        <button className="voteButton" onClick={vote}>
+        <button className="voteButton" onClick={null}>
           Vote here
         </button>
       </div>

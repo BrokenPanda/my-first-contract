@@ -1,8 +1,8 @@
 {
   "name": "my-first-contract",
   "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "description": "It's my first smart contract doing the buildspace tutorial",
+  "main": "frontend/public/index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -11,10 +11,15 @@
   "license": "ISC",
   "devDependencies": {
     "@nomiclabs/hardhat-ethers": "^2.0.6",
+    "@nomiclabs/hardhat-etherscan": "^3.0.4",
     "@nomiclabs/hardhat-waffle": "^2.0.3",
     "chai": "^4.3.6",
     "ethereum-waffle": "^3.4.4",
     "ethers": "^5.6.6",
-    "hardhat": "^2.9.5"
+    "hardhat": "^2.9.5",
+    "hardhat-gas-reporter": "^1.0.8"
+  },
+  "dependencies": {
+    "@openzeppelin/contracts": "^4.6.0"
   }
 }

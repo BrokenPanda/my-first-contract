@@ -12,8 +12,6 @@ const App = () => {
       if(!ethereum) {
         console.log("Make sure you have Metamask installed.");
         return;
-      } else {
-        console.log("Jawollo", ethereum);
       }
 
       const accounts = await ethereum.request({ method: "eth_accounts"});
@@ -25,6 +23,24 @@ const App = () => {
       } else {
         console.log("No authorized account found");
       }
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  const connectWallet = async () => {
+    try {
+      const { ethereum } = window;
+
+      if(!ethereum) {
+        alert("Get Metamask!");
+        return;
+      }
+
+      const accounts = await ethereum.request({method: "eth_requestAccounts"});
+
+      console.log("Connected");
+      setCurrentAccount(accounts[0]);
     } catch (error) {
       console.log(error);
     }
@@ -48,6 +64,12 @@ const App = () => {
         <button className="voteButton" onClick={null}>
           Vote here
         </button>
+
+        { !currentAccount && (
+          <button className="voteButton" onClick={connectWallet}>
+            Connect Wallet
+          </button>
+        )}
       </div>
     </div>
   );

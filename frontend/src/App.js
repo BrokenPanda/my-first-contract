@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from "react";
+import { ethers } from "ethers";
 import './App.css';
+import abi from "./utils/MyFirstContract.json";
 
 const App = () => {
 
@@ -46,6 +48,27 @@ const App = () => {
     }
   }
 
+  const vote = async () => {
+    try {
+      const { ethereum } = window;
+      const contractAddress = "0xB4dbe07B92E8B95C70D6E07F5387304a9f10bf90";
+      const contractABI = abi.abi;
+
+      if (ethereum) {
+        const provider = new ethers.providers.Web3Provider(ethereum);
+        const signer = provider.getSigner();
+        const myFirstContract = new ethers.Contract(contractAddress, contractABI, signer);
+
+        let count = await myFirstContract.getTotalVotes();
+        console.log("Retrieved total vote count...", count.toNumber());
+      } else {
+        console.log("Ethereum object doesn't exist!");
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
   useEffect(() => {
     checkIfWalletIsConnected();
   }, []);
@@ -61,10 +84,11 @@ const App = () => {
         I am farza and I worked on self-driving cars so that's pretty cool right? Connect your Ethereum wallet and wave at me!
         </div>
 
-        <button className="voteButton" onClick={null}>
+        <button className="voteButton" onClick={vote}>
           Vote here
         </button>
 
+{}
         { !currentAccount && (
           <button className="voteButton" onClick={connectWallet}>
             Connect Wallet

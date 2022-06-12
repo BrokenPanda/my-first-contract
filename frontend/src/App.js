@@ -61,6 +61,15 @@ const App = () => {
 
         let count = await myFirstContract.getTotalVotes();
         console.log("Retrieved total vote count...", count.toNumber());
+      
+        const voteTxn = await myFirstContract.vote();
+        console.log("Mining...");
+
+        await voteTxn.wait();
+        console.log("Mined! ", voteTxn.hash);
+
+        count = await myFirstContract.getTotalVotes();
+        console.log("Retrieved total vote count...", count.toNumber());
       } else {
         console.log("Ethereum object doesn't exist!");
       }
@@ -77,18 +86,18 @@ const App = () => {
     <div className="mainContainer">
       <div className="dataContainer">
         <div className="header">
-        👋 Hey there!
+        Voting Contract Homepage
         </div>
 
         <div className="bio">
-        I am farza and I worked on self-driving cars so that's pretty cool right? Connect your Ethereum wallet and wave at me!
+        I am Dominik and I want to get started in Blockchain Development by creating my own Voting Smart Contract in Solidity! <br />
+        Connect your Ethereum wallet and try it out!
         </div>
 
         <button className="voteButton" onClick={vote}>
           Vote here
         </button>
 
-{}
         { !currentAccount && (
           <button className="voteButton" onClick={connectWallet}>
             Connect Wallet

@@ -125,10 +125,14 @@ const App = () => {
         Connect your Ethereum wallet and try it out!
         </div>
 
+        <div className="messageInput">
+          <p><label for="message">message: </label></p>
+          <textarea id="message" name="message" rows="4" cols="50"></textarea>
+        </div>
+        
         <button className="voteButton" onClick={vote}>
           Vote here
         </button>
-
         { !currentAccount && (
           <button className="voteButton" onClick={connectWallet}>
             Connect Wallet

@@ -1,17 +1,21 @@
 const main = async () => {
-    const {owner} = await hre.ethers.getSigners();
     const myContractFactory = await hre.ethers.getContractFactory("MyFirstContract");
     const myContract = await myContractFactory.deploy();
     await myContract.deployed();
-    
     console.log("Contract deployed to:", myContract.address);
-    console.log("Contract deployed to:", owner.address);
 
     let voteCount = await myContract.getTotalVotes();
-    let voteTxn = await myContract.vote();
+    console.log("Vote count:", voteCount);
+  
+    let voteTxn = await myContract.vote(0, "The message!");
     await voteTxn.wait();
 
-    voteCount = await myContract.getTotalVotes();
+    const [_, randomPerson] = await hre.ethers.getSigners();
+    voteTxn = await myContract.connect(randomPerson).vote(0, "Another message!");
+    await voteTxn.wait();
+
+    let allVotes = await myContract.getVotes();
+    console.log(allVotes);
 };
 
 const runMain = async () => {

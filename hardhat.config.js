@@ -17,5 +17,18 @@ task("accounts", "Prints the list of accounts", async (taskArgs, hre) => {
  * @type import('hardhat/config').HardhatUserConfig
  */
 module.exports = {
+  defaultNetwork: "goerli",
+  networks: {
+    goerli: {
+      chainId: 5,
+      url: process.env['STAGING_ALCHEMY_URL'],
+      accounts: [process.env['PRIVATE_KEY']],
+    },
+    mainnet: {
+      chainId: 1,
+      url: process.env['PROD_ALCHEMY_URL'],
+      accounts: [process.env['PRIVATE_KEY']],
+    },
+  },
   solidity: "0.8.4",
 };

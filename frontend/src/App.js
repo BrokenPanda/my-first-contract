@@ -6,6 +6,8 @@ import abi from "./utils/MyFirstContract.json";
 const App = () => {
 
   const [currentAccount, setCurrentAccount] = useState("");
+  const [allVotes, setVotes] = useState([]);
+  const contractAddress = "0x067682e20BB873807133198e4480BBb28104eC4a";
   
   const checkIfWalletIsConnected = async () => {
     try {
@@ -22,6 +24,7 @@ const App = () => {
         const account = accounts[0];
         console.log("Found an authorized account: ", account);
         setCurrentAccount(account);
+        getAllVotes();
       } else {
         console.log("No authorized account found");
       }
@@ -51,18 +54,16 @@ const App = () => {
   const vote = async () => {
     try {
       const { ethereum } = window;
-      const contractAddress = "0xB4dbe07B92E8B95C70D6E07F5387304a9f10bf90";
-      const contractABI = abi.abi;
 
       if (ethereum) {
         const provider = new ethers.providers.Web3Provider(ethereum);
         const signer = provider.getSigner();
-        const myFirstContract = new ethers.Contract(contractAddress, contractABI, signer);
+        const myFirstContract = new ethers.Contract(contractAddress, abi.abi, signer);
 
         let count = await myFirstContract.getTotalVotes();
         console.log("Retrieved total vote count...", count.toNumber());
       
-        const voteTxn = await myFirstContract.vote();
+        const voteTxn = await myFirstContract.vote(0, "Insert message here");
         console.log("Mining...");
 
         await voteTxn.wait();
@@ -74,6 +75,36 @@ const App = () => {
         console.log("Ethereum object doesn't exist!");
       }
     } catch (error) {
+      console.log(error);
+    }
+  }
+
+  const getAllVotes = async () => {
+    try {
+      const { ethereum } = window;
+      
+      if (ethereum) {
+        const provider = new ethers.providers.Web3Provider(ethereum);
+        const signer = provider.getSigner();
+        const myFirstContract = new ethers.Contract(contractAddress, abi.abi, signer);
+
+        const votes = await myFirstContract.getVotes();
+
+        let votesCleaned = [];
+        votes.forEach(vote => {
+          votesCleaned.push({
+            address: vote.voter,
+            timestamp: new Date(vote.timestamp * 1000),
+            message: vote.message,
+          });
+        });
+        
+        console.log("votes:", votes);
+        
+        setVotes(votesCleaned);
+      }
+
+    } catch(error) {
       console.log(error);
     }
   }
@@ -103,6 +134,16 @@ const App = () => {
             Connect Wallet
           </button>
         )}
+        
+        { allVotes.map((vote, index) => {
+        return (
+          <div key={index} style={{ backgroundColor: "OldLace", marginTop: "16px", padding: "8px" }}>
+            <div>Address: { vote.address }</div>
+            <div>Time: { vote.timestamp.toString() }</div>
+            <div>Message: { vote.message }</div>
+          </div>)
+        })}
+
       </div>
     </div>
   );

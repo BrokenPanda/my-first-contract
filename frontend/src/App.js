@@ -7,7 +7,7 @@ const App = () => {
 
   const [currentAccount, setCurrentAccount] = useState("");
   const [allVotes, setVotes] = useState([]);
-  const contractAddress = "0x067682e20BB873807133198e4480BBb28104eC4a";
+  const contractAddress = "0xDDfdcf29C0A3429ba5606F2c3f5A85541ce279c8";
   
   const checkIfWalletIsConnected = async () => {
     try {

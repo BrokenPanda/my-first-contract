@@ -14,20 +14,37 @@
 
 .header {
   text-align: center;
-  font-size: 32px;
-  font-weight: 600;
+  margin-top: -50px;
+  font-size: 40px;
+  font-weight: 1000;
 }
 
 .bio {
   text-align: center;
-  color: gray;
-  margin-top: 16px;
+  margin-top: 10px;
+  font-size: 20px;
+  font-weight: 500;
 }
 
 .voteButton {
   cursor: pointer;
-  margin-top: 16px;
   padding: 8px;
+  border: 0;
+  border-radius: 5px;
+}
+
+#message {
+  width: -webkit-fill-available;
+}
+
+.messageInput {
+  text-align: center;
+  font-size: 18px;
+  font-weight: 500;
+}
+
+.voteList {
+  color: black;
   border: 0;
   border-radius: 5px;
 }

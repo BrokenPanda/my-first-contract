@@ -111,6 +111,34 @@ const App = () => {
 
   useEffect(() => {
     checkIfWalletIsConnected();
+
+    let myFirstContract;
+
+    const onNewVote = (from, timestamp, message) => {
+      console.log("NewVote", from, timestamp, message);
+      setVotes(prevState => [
+        ...prevState,
+        {
+          address: from,
+          timestamp: new Date(timestamp * 1000),
+          message: message,
+        },
+      ]);
+    };
+  
+    if (window.ethereum) {
+      const provider = new ethers.providers.Web3Provider(window.ethereum);
+      const signer = provider.getSigner();
+  
+      myFirstContract = new ethers.Contract(contractAddress, abi.abi, signer);
+      myFirstContract.on("newVote", onNewVote);
+    }
+  
+    return () => {
+      if (myFirstContract) {
+        myFirstContract.off("newVote", onNewVote);
+      }
+    };
   }, []);
 
   return (
@@ -121,13 +149,15 @@ const App = () => {
         </div>
 
         <div className="bio">
-        I am Dominik and I want to get started in Blockchain Development by creating my own Voting Smart Contract in Solidity! <br />
+        I'm Dominik and I want to get started in Blockchain Development by creating my own Voting Contract in Solidity!<br />
         Connect your Ethereum wallet and try it out!
         </div>
 
         <div className="messageInput">
-          <p><label for="message">message: </label></p>
-          <textarea id="message" name="message" rows="4" cols="50"></textarea>
+          <p>
+            <label for="message">The Message:</label><br /><br />
+            <textarea id="message" name="message" rows="4" cols="50"></textarea>
+          </p>
         </div>
         
         <button className="voteButton" onClick={vote}>
@@ -141,7 +171,7 @@ const App = () => {
         
         { allVotes.map((vote, index) => {
         return (
-          <div key={index} style={{ backgroundColor: "OldLace", marginTop: "16px", padding: "8px" }}>
+          <div key={index} className="voteList" style={{ backgroundColor: "OldLace", marginTop: "16px", padding: "8px" }}>
             <div>Address: { vote.address }</div>
             <div>Time: { vote.timestamp.toString() }</div>
             <div>Message: { vote.message }</div>

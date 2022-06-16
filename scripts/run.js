@@ -13,7 +13,10 @@ const main = async () => {
   
     const voteTxn = await myContract.vote(0, "The message!");
     await voteTxn.wait();
-
+    console.log("Vote #1 successfull");
+    const voteTxn = await myContract.vote(0, "The message!");
+    await voteTxn.wait();
+    console.log("Vote #1 successfull");
     const contractBalance1 =  await ethers.provider.getBalance(myContract.address);
     console.log("Contract Balance:", ethers.utils.formatEther(contractBalance1));
 
